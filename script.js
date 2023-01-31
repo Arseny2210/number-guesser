@@ -11,9 +11,20 @@ document.querySelector('#max').textContent = max;
 
 
 const showMessage = (text, style) => {
-        message.textContent = text;
-        message.classList.add(style);
-}
+    message.textContent = text;
+    message.classList.add(style);
+};
+
+
+
+const playAgain = (clazz) => {
+    ipnutNumber.disabled = true;
+    btn.textContent = "PLAY AGAIN";
+    btn.addEventListener('click', () => {
+        window.location.reload();
+    });
+    ipnutNumber.classList.add(clazz);
+};
 
 btn.addEventListener('click', () => {
     if (ipnutNumber.value == '') {
@@ -21,11 +32,14 @@ btn.addEventListener('click', () => {
     } else if (ipnutNumber.value < min || ipnutNumber.value > max) {
         showMessage(`Input a number between ${min} and ${max}`, `danger`);
     } else if (ipnutNumber.value == randomNum) {
-        ipnutNumber.disabled = true;
-        btn.textContent = "PLAY AGAIN";
+        playAgain('win');
         showMessage(`You win! The winning number is ${randomNum}`, `success`);
-    } else if (lives != 0 && ipnutNumber.value != randomNum) {
+    } else if (lives != 1 && ipnutNumber.value != randomNum) {
         lives--;
         showMessage(`${ipnutNumber.value} is not correct! You have ${lives} guesses left`, `danger`);
+    } else if (lives == 1) {
+        playAgain('lose');
+        lives--;
+        showMessage(`You lose. The correct answer was ${randomNum}`);
     }
 });
